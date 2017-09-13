@@ -45,31 +45,119 @@ public class Grid{
 
     }
     private boolean checkFill(int x, int y){
-
+        int neighbors = checkAll(x, y);
     }
-    private int checkTop(){
-
+    private int checkAll(int x, int y){
+        int count = 0;
+        if (checkTop(x, y) == 1){
+            count++;
+        }
+        if (checkBot(x, y) == 1){
+            count++;
+        }
+        if (checkLeft(x, y) == 1){
+            count++;
+        }
+        if (checkRight(x, y) == 1){
+            count++;
+        }
+        if (checkLeftLowDia(x, y) == 1){
+            count++;
+        }
+        if (checkLeftTopDia(x, y) == 1){
+            count++;
+        }
+        if (checkRightLowDia(x, y) == 1){
+            count++;
+        }
+        if (checkRightTopDia(x, y) == 1){
+            count++;
+        }
+        return count;
     }
-    private int checkBot(){
-
+    private int checkTop(int x, int y){
+        int tell = 0;
+        if (x == 0){
+            x = 5;
+        }
+        cells [x - 1][y] = main;
+        tell = main.getPop();
+        return tell;
     }
-    private int checkLeft(){
-
+    private int checkBot(int x, int y){
+        int tell = 0;
+        if (x == 4){
+            x = -1;
+        }
+        cells [x + 1][y] = main;
+        tell = main.getPop();
+        return tell;
     }
-    private int checkRight(){
-
+    private int checkLeft(int x, int y){
+        int tell = 0;
+        if (y == 0){
+            y = 5;
+        }
+        cells [x][y - 1] = main;
+        tell = main.getPop();
+        return tell;
     }
-    private int checkRightLowDia(){
-
+    private int checkRight(int x, int y){
+        int tell = 0;
+        if (y == 4){
+            y = -1;
+        }
+        cells [x][y + 1] = main;
+        tell = main.getPop();
+        return tell;
     }
-    private int checkRightTopDia(){
-
+    private int checkRightLowDia(int x, int y){
+        int tell = 0;
+        if (y == 4){
+            y = -1;
+        }
+        if (x == 4){
+            x = -1;
+        }
+        cells [x + 1][y + 1] = main;
+        tell = main.getPop();
+        return tell;
     }
-    private int checkLeftLowDia(){
-
+    private int checkRightTopDia(int x, int y){
+        int tell = 0;
+        if (y == 4){
+            y = -1;
+        }
+        if (x == 0){
+            x = 5;
+        }
+        cells [x - 1][y + 1] = main;
+        tell = main.getPop();
+        return tell;
     }
-    private int checkLeftTopDia(){
-
+    private int checkLeftLowDia(int x, int y){
+        int tell = 0;
+        if (y == 0){
+            y = 5;
+        }
+        if (x == 4){
+            x = -1;
+        }
+        cells [x + 1][y - 1] = main;
+        tell = main.getPop();
+        return tell;
+    }
+    private int checkLeftTopDia(int x, int y){
+        int tell = 0;
+        if (y == 0){
+            y = 5;
+        }
+        if (x == 0){
+            x = 5;
+        }
+        cells [x - 1][y - 1] = main;
+        tell = main.getPop();
+        return tell;
     }
 
 
