@@ -11,28 +11,26 @@ public class Grid{
         main = c;
     }
 
-   public void changeCell (int x, int y) {
-        Cell c;
-       c = cells [x][y];
-       if (c.getPop()== 0){
-           c.setPop(1);
-           cells [x][y] = c;
-           changeInArr(x, y);
-       }else if (c.getPop() == 1){
-           c.setPop(0);
-           cells [x][y] = c;
-           changeInArr(x, y);
-       }
-       give(x, y);
+
+    public void printGrid() {
+        System.out.println(Arrays.deepToString(this.living));
+        allChanges();
     }
     private void changeInArr(int x, int y){
-        cells [x][y] = main ;
-        living [x][y] = main.getPop();
+       Cell c =  cells [x][y];
+        living [x][y] = c.getPop();
+    }
+    public void change (int x, int y) {
+        cells[x][y].give();
+        cells[x][y].changeCell();
+        changeInArr(x, y);
+        cells[x][y] = main;
+
     }
 
     private void allChanges(){
         for(int i = 0; i < cells.length; i++){
-           for(int j = 0; j <cells.length; j++){
+           for(int j = 0; j <cells[i].length; j++){
                if(cells[i][j].getPop() == 0){
                    checkEmpty(i, j);
                }else if (cells[i][j].getPop() == 1){
@@ -41,11 +39,26 @@ public class Grid{
            }
         }
     }
-    private boolean checkEmpty(int x, int y){
-
+    private void checkEmpty(int x, int y){
+    int n = checkAll(x, y);
+        if (n == 3){
+        cells[x][y].setPop(1);
+        }else{
+            cells[x][y].setPop(0);
+        }
+        changeInArr(x, y);
     }
-    private boolean checkFill(int x, int y){
-        int neighbors = checkAll(x, y);
+    private void checkFill(int x, int y){
+        int n = checkAll(x, y);
+        if (n <= 1){
+            cells[x][y].setPop(0);
+        } else if (n == 2 || n == 3){
+           Cell c = cells[x][y];
+            cells[x][y].setPop(c.getPop());
+        } else{
+            cells[x][y].setPop(0);
+        }
+        changeInArr(x, y);
     }
     private int checkAll(int x, int y){
         int count = 0;
@@ -162,19 +175,11 @@ public class Grid{
 
 
 
-    public void give(int x, int y){
-        int c = living[x][y];
-        System.out.println(c);
-    }
-
-    public void printGrid() {
-        System.out.println(Arrays.deepToString(this.living));
-    }
     public void fill (){
         for(int i = 0 ; i < cells.length ; i++){
             for(int j = 0 ; j < cells.length ; j++){
-                cells[i][j] = main;
                 main.setPop(0);
+                cells[i][j] = main;
                 living[i][j] = main.getPop();
             }
 

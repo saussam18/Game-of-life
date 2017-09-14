@@ -8,7 +8,9 @@ public class Main {
         Cell c = new Cell (0);
           Grid g = new Grid(c);
           g.fill();
-          g.changeCell(3,2);
+          g.change(2,2);
+             g.change(1,2);
+            g.change(1, 4);
           /*while(){
               g.printGrid();
           }*/
