@@ -1,6 +1,7 @@
 package com.company;
 
 import java.util.Arrays;
+import java.util.Random;
 
 public class Grid{
 
@@ -176,9 +177,15 @@ public class Grid{
 
 
     public void fill (){
+        Random ran = new Random();
         for(int i = 0 ; i < cells.length ; i++){
             for(int j = 0 ; j < cells.length ; j++){
-                main.setPop(0);
+                int n = ran.nextInt(2);
+                if (n == 1){
+                    main.setPop(0);
+                } else if (n == 2){
+                    main.setPop(1);
+                }
                 cells[i][j] = main;
                 living[i][j] = main.getPop();
             }
