@@ -16,7 +16,7 @@ public class Cell {
     public int getPop(){
         return this.pop;
     }
-    public void give(){
+    public void give(){ //Was just used to check if it was right or not
         System.out.println(pop);
     }
     public void changeCell(){

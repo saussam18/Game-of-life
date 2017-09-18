@@ -8,13 +8,7 @@ public class Main {
         Cell c = new Cell (0);
           Grid g = new Grid(c);
           g.fill();
-       //   g.change(2,2);
-        //     g.change(1,2);
-        //    g.change(1, 4);
-          /*while(){
-              g.printGrid();
-          }*/
-        for(int i = 0; i <= 2; i++){
+        for(int i = 0; i <= 4; i++){
             g.printGrid();
         }
 

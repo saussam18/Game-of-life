@@ -5,31 +5,40 @@ import java.util.Random;
 
 public class Grid{
 
-   private Cell [][] cells = new Cell[5][5] ;
+   private Cell [][] cells = new Cell[5][5];
    private Cell main;
    private int [][] living = new int [5][5];
    public Grid (Cell c){
         main = c;
     }
 
-
+    public void fill (){ //fills randomly after initializing
+        Random ran = new Random();
+        for(int i = 0 ; i < cells.length ; i++){
+            for(int j = 0 ; j < cells.length ; j++){
+                cells[i][j] = new Cell (0);
+                int n = ran.nextInt(2);
+                if (n == 0){
+                    main.setPop(0);
+                } else if (n == 1){
+                    main.setPop(1);
+                }
+                cells [i][j].setPop(main.getPop());
+                living[i][j] = main.getPop();
+            }
+        }
+    }
     public void printGrid() {
-        System.out.println(Arrays.deepToString(this.living));
+        for (int i = 0; i < living.length; i++){
+            System.out.println(Arrays.toString(living[i]));
+        }
+        System.out.println("*******");
         allChanges();
     }
-    private void changeInArr(int x, int y){
-       Cell c =  cells [x][y];
-        living [x][y] = c.getPop();
+    private void changeInArr(int x, int y){//changes object array to match print array
+        living [x][y] = cells[x][y].getPop();
     }
-    public void change (int x, int y) {
-        cells[x][y].give();
-        cells[x][y].changeCell();
-        changeInArr(x, y);
-        cells[x][y] = main;
-
-    }
-
-    private void allChanges(){
+    private void allChanges(){// Does all the changes as the game continues
         for(int i = 0; i < cells.length; i++){
            for(int j = 0; j <cells[i].length; j++){
                if(cells[i][j].getPop() == 0){
@@ -41,27 +50,24 @@ public class Grid{
         }
     }
     private void checkEmpty(int x, int y){
-    int n = checkAll(x, y);
+        int n = checkAll(x, y);
         if (n == 3){
-        cells[x][y].setPop(1);
-        }else{
-            cells[x][y].setPop(0);
-        }
+        cells[x][y].changeCell();
         changeInArr(x, y);
+        }
     }
     private void checkFill(int x, int y){
         int n = checkAll(x, y);
         if (n <= 1){
-            cells[x][y].setPop(0);
-        } else if (n == 2 || n == 3){
-           Cell c = cells[x][y];
-            cells[x][y].setPop(c.getPop());
-        } else{
-            cells[x][y].setPop(0);
+            cells[x][y].changeCell();
+            changeInArr(x, y);
+        } else if (n >= 4 ){
+            cells[x][y].changeCell();
+            changeInArr(x, y);
         }
-        changeInArr(x, y);
+
     }
-    private int checkAll(int x, int y){
+    private int checkAll(int x, int y){//counts up all the neighbors
         int count = 0;
         if (checkTop(x, y) == 1){
             count++;
@@ -89,108 +95,81 @@ public class Grid{
         }
         return count;
     }
-    private int checkTop(int x, int y){
+    private int checkTop(int x, int y){//used ints again to make easier for me, boolean can be used also
         int tell = 0;
-        if (x == 0){
-            x = 5;
+        if (x == 0){//For all, counts neighbors across boundries so it can move across
+            x = cells.length;
         }
-        cells [x - 1][y] = main;
-        tell = main.getPop();
+        tell = cells [x - 1][y].getPop();
         return tell;
     }
     private int checkBot(int x, int y){
         int tell = 0;
-        if (x == 4){
+        if (x == cells.length-1){
             x = -1;
         }
-        cells [x + 1][y] = main;
-        tell = main.getPop();
+        tell = cells [x + 1][y].getPop();
         return tell;
     }
     private int checkLeft(int x, int y){
         int tell = 0;
         if (y == 0){
-            y = 5;
+            y = cells.length;
         }
-        cells [x][y - 1] = main;
-        tell = main.getPop();
+        tell = cells [x][y - 1].getPop();
         return tell;
     }
     private int checkRight(int x, int y){
         int tell = 0;
-        if (y == 4){
+        if (y == cells.length - 1){
             y = -1;
         }
-        cells [x][y + 1] = main;
-        tell = main.getPop();
+        tell = cells [x][y + 1].getPop();
         return tell;
     }
     private int checkRightLowDia(int x, int y){
         int tell = 0;
-        if (y == 4){
+        if (y == cells.length-1){
             y = -1;
         }
-        if (x == 4){
+        if (x == cells.length-1){
             x = -1;
         }
-        cells [x + 1][y + 1] = main;
-        tell = main.getPop();
+        tell = cells [x + 1][y + 1].getPop();
         return tell;
     }
     private int checkRightTopDia(int x, int y){
         int tell = 0;
-        if (y == 4){
+        if (y == cells.length-1){
             y = -1;
         }
         if (x == 0){
-            x = 5;
+            x = cells.length;
         }
-        cells [x - 1][y + 1] = main;
-        tell = main.getPop();
+        tell = cells [x - 1][y + 1].getPop();
         return tell;
     }
     private int checkLeftLowDia(int x, int y){
         int tell = 0;
         if (y == 0){
-            y = 5;
+            y = cells.length;
         }
-        if (x == 4){
+        if (x == cells.length -1){
             x = -1;
         }
-        cells [x + 1][y - 1] = main;
-        tell = main.getPop();
+        tell = cells [x + 1][y - 1].getPop();
         return tell;
     }
     private int checkLeftTopDia(int x, int y){
         int tell = 0;
         if (y == 0){
-            y = 5;
+            y = cells.length;
         }
         if (x == 0){
-            x = 5;
+            x = cells.length;
         }
-        cells [x - 1][y - 1] = main;
-        tell = main.getPop();
+        tell = cells [x - 1][y - 1].getPop();
         return tell;
-    }
-
-
-
-    public void fill (){
-        Random ran = new Random();
-        for(int i = 0 ; i < cells.length ; i++){
-            for(int j = 0 ; j < cells.length ; j++){
-                int n = ran.nextInt(2);
-                if (n == 1){
-                    main.setPop(0);
-                } else if (n == 2){
-                    main.setPop(1);
-                }
-                cells[i][j] = main;
-                living[i][j] = main.getPop();
-            }
-
-        }
     }
 
 
